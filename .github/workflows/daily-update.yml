@@ -1,8 +1,10 @@
 name: Daily Repository Update
 
+permissions:
+  contents: write
+
 on:
   schedule:
-    # Runs every day at 10:30 UTC (SPECIFIC time ✔)
     - cron: '30 10 * * *'
   workflow_dispatch:
 
@@ -13,6 +15,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: true
 
       - name: Setup Git
         run: |
@@ -23,5 +27,5 @@ jobs:
         run: |
           echo "Last update: $(date)" >> daily_log.txt
           git add daily_log.txt
-          git commit -m "Automated daily update"
+          git commit -m "Automated daily update" || echo "No changes"
           git push
