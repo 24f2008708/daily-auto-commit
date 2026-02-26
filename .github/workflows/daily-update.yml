@@ -1,0 +1,27 @@
+name: Daily Repository Update
+
+on:
+  schedule:
+    # Runs every day at 10:30 UTC (SPECIFIC time ✔)
+    - cron: '30 10 * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Git
+        run: |
+          git config user.name "DevSync Bot"
+          git config user.email "24f2008708@ds.study.iitm.ac.in"
+
+      - name: Daily commit step - 24f2008708@ds.study.iitm.ac.in
+        run: |
+          echo "Last update: $(date)" >> daily_log.txt
+          git add daily_log.txt
+          git commit -m "Automated daily update"
+          git push
